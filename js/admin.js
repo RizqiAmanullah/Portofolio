@@ -143,7 +143,8 @@ async function loadArticles() {
 async function getArticles() {
     try {
         const articlesRef = db.collection('articles');
-        const snapshot = await articlesRef.orderBy('createdAt', 'desc').get();
+        // Remove orderBy since created_at field doesn't exist yet
+        const snapshot = await articlesRef.get();
         
         const articles = [];
         snapshot.forEach(doc => {
@@ -153,9 +154,9 @@ async function getArticles() {
                 title: data.title,
                 content: data.content,
                 category: data.category,
-                author: data.author,
+                author: data.author || 'Unknown',
                 featured: data.featured || false,
-                date: data.createdAt ? data.createdAt.toDate().toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
+                date: data.created_at ? data.created_at.toDate().toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
             });
         });
         
@@ -182,7 +183,7 @@ async function saveArticle(e) {
         content,
         featured,
         author: auth.currentUser.email,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        created_at: firebase.firestore.FieldValue.serverTimestamp()
     };
     
     try {

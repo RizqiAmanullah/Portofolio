@@ -26,7 +26,8 @@ function loadArticles() {
 async function getArticlesData() {
     try {
         const articlesRef = db.collection('articles');
-        const snapshot = await articlesRef.orderBy('createdAt', 'desc').get();
+        // Remove orderBy since created_at field might not exist in all documents
+        const snapshot = await articlesRef.get();
         
         const articles = [];
         snapshot.forEach(doc => {
@@ -36,10 +37,10 @@ async function getArticlesData() {
                 title: data.title,
                 content: data.content,
                 category: data.category,
-                author: data.author,
+                author: data.author || 'Unknown',
                 featured: data.featured || false,
-                date: data.createdAt ? data.createdAt.toDate().toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
-                created_at: data.createdAt ? data.createdAt.toDate() : new Date()
+                date: data.created_at ? data.created_at.toDate().toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+                created_at: data.created_at ? data.created_at.toDate() : new Date()
             });
         });
         
