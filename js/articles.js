@@ -1,5 +1,4 @@
 // Articles page functionality
-
 document.addEventListener('DOMContentLoaded', function() {
     loadArticles();
     initFilters();
@@ -26,7 +25,6 @@ function loadArticles() {
 async function getArticlesData() {
     try {
         const articlesRef = db.collection('articles');
-        // Remove orderBy since created_at field might not exist in all documents
         const snapshot = await articlesRef.get();
         
         const articles = [];
@@ -34,17 +32,20 @@ async function getArticlesData() {
             const data = doc.data();
             articles.push({
                 id: doc.id,
-                title: data.title,
-                content: data.content,
-                category: data.category,
-                author: data.author || 'Unknown',
-                featured: data.featured || false,
-                date: data.created_at ? data.created_at.toDate().toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
-                created_at: data.created_at ? data.created_at.toDate() : new Date()
+                title: data.title || '',
+                content: data.content || '',
+                category: data.category || '',
+                author: data.author || 'Anonymous',
+                featured: Boolean(data.featured),
+                date: new Date().toISOString().split('T')[0]
             });
         });
         
-        return articles;
+        return articles.sort((a, b) => {
+            if (a.featured && !b.featured) return -1;
+            if (!a.featured && b.featured) return 1;
+            return new Date(b.date) - new Date(a.date);
+        });
     } catch (error) {
         console.error('Error loading articles:', error);
         return [];
@@ -93,14 +94,14 @@ function createFeaturedArticleElement(article) {
     articleDiv.innerHTML = `
         <div class="featured-article-content">
             <div class="article-badge">Featured</div>
-            <h4>${article.title}</h4>
+            <h4>${sanitize(article.title)}</h4>
             <div class="article-meta">
-                <span class="category">${article.category}</span>
+                <span class="category">${sanitize(article.category)}</span>
                 <span class="date">${formatDate(article.date)}</span>
-                <span class="author">by ${article.author}</span>
+                <span class="author">by ${sanitize(article.author)}</span>
             </div>
-            <p class="article-excerpt">${article.content.substring(0, 200)}...</p>
-            <button class="btn btn-small" onclick="openArticleModal(${article.id})">Read More</button>
+            <p class="article-excerpt">${sanitize(article.content.substring(0, 200))}...</p>
+            <button class="btn btn-small" onclick="openArticleModal('${article.id}')">Read More</button>
         </div>
     `;
     return articleDiv;
@@ -112,17 +113,17 @@ function createArticleElement(article) {
     articleDiv.className = 'article-card';
     articleDiv.innerHTML = `
         <div class="article-header">
-            <h4>${article.title}</h4>
+            <h4>${sanitize(article.title)}</h4>
             ${article.featured ? '<span class="featured-badge">Featured</span>' : ''}
         </div>
         <div class="article-meta">
-            <span class="category">${article.category}</span>
+            <span class="category">${sanitize(article.category)}</span>
             <span class="date">${formatDate(article.date)}</span>
         </div>
-        <p class="article-excerpt">${article.content.substring(0, 150)}...</p>
+        <p class="article-excerpt">${sanitize(article.content.substring(0, 150))}...</p>
         <div class="article-footer">
-            <span class="author">by ${article.author}</span>
-            <button class="btn btn-small" onclick="openArticleModal(${article.id})">Read More</button>
+            <span class="author">by ${sanitize(article.author)}</span>
+            <button class="btn btn-small" onclick="openArticleModal('${article.id}')">Read More</button>
         </div>
     `;
     return articleDiv;
@@ -132,6 +133,17 @@ function createArticleElement(article) {
 function formatDate(dateString) {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(dateString).toLocaleDateString('en-US', options);
+}
+
+// Sanitize HTML to prevent XSS
+function sanitize(unsafe) {
+    if (!unsafe) return '';
+    return unsafe.toString()
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '<')
+        .replace(/>/g, '>')
+        .replace(/"/g, '"')
+        .replace(/'/g, '&#039;');
 }
 
 // Filter articles
@@ -147,10 +159,7 @@ function filterArticles() {
         }
         
         displayAllArticles(filteredArticles);
-        
-        // Also filter featured articles
-        const featuredFiltered = filteredArticles.filter(article => article.featured);
-        displayFeaturedArticles(featuredFiltered);
+        displayFeaturedArticles(filteredArticles);
     });
 }
 
@@ -188,7 +197,6 @@ function openArticleModal(articleId) {
 
 // Show article modal
 function showArticleModal(article) {
-    // Create modal if it doesn't exist
     let modal = document.getElementById('articleModal');
     if (!modal) {
         modal = document.createElement('div');
@@ -200,17 +208,17 @@ function showArticleModal(article) {
     modal.innerHTML = `
         <div class="modal-content">
             <div class="modal-header">
-                <h2>${article.title}</h2>
+                <h2>${sanitize(article.title)}</h2>
                 <span class="close-modal" onclick="closeArticleModal()">&times;</span>
             </div>
             <div class="modal-meta">
-                <span class="category">${article.category}</span>
+                <span class="category">${sanitize(article.category)}</span>
                 <span class="date">${formatDate(article.date)}</span>
-                <span class="author">by ${article.author}</span>
+                <span class="author">by ${sanitize(article.author)}</span>
                 ${article.featured ? '<span class="featured-badge">Featured</span>' : ''}
             </div>
             <div class="modal-body">
-                <p>${article.content}</p>
+                <p>${sanitize(article.content)}</p>
             </div>
         </div>
     `;
