@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "title": "Getting Started with Machine Learning",
+    "content": "Machine Learning is a subset of artificial intelligence that enables computers to learn and make decisions from data without being explicitly programmed. In this article, we'll explore the fundamentals of ML and how to get started with your first project.",
+    "author": "Rizqi Amanullah",
+    "date": "2024-01-15",
+    "category": "Machine Learning",
+    "featured": true
+  },
+  {
+    "id": 2,
+    "title": "Computer Vision Applications in Real World",
+    "content": "Computer Vision has revolutionized many industries by enabling machines to interpret and understand visual information. From autonomous vehicles to medical imaging, CV applications are everywhere around us.",
+    "author": "Rizqi Amanullah",
+    "date": "2024-01-10",
+    "category": "Computer Vision",
+    "featured": false
+  },
+  {
+    "id": 3,
+    "title": "Data Science Best Practices",
+    "content": "Data Science is more than just analyzing data. It involves understanding business problems, cleaning data, building models, and communicating insights effectively. Here are some best practices every data scientist should follow.",
+    "author": "Rizqi Amanullah",
+    "date": "2024-01-05",
+    "category": "Data Science",
+    "featured": true
+  }
+]
