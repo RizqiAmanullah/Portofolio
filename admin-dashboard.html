@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="style1.css">
+    <title>Admin Dashboard - Portfolio Website</title>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo">Rizqi Amanullah</a>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="articles.html">Articles</a>
+            <a href="index.html#skills">Skills</a>
+            <a href="index.html#education">Education</a>
+            <a href="index.html#experience">Experience</a>
+            <a href="contact.html">Contact</a>
+            <a href="#" class="active">Dashboard</a>
+            <a href="#" id="logoutBtn">Logout</a>
+        </nav>
+    </header>
+
+    <section class="admin-dashboard">
+        <h2>Article Management</h2>
+        
+        <div class="dashboard-container">
+            <div class="article-form">
+                <h3>Add/Edit Article</h3>
+                <form id="articleForm">
+                    <input type="hidden" id="articleId">
+                    <div class="form-group">
+                        <label for="title">Title:</label>
+                        <input type="text" id="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Category:</label>
+                        <input type="text" id="category" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="content">Content:</label>
+                        <textarea id="content" rows="6" required></textarea>
+                    </div>
+                    <div class="form-group checkbox">
+                        <label for="featured">
+                            <input type="checkbox" id="featured">
+                            Featured Article
+                        </label>
+                    </div>
+                    <div class="form-buttons">
+                        <button type="submit" class="btn">Save Article</button>
+                        <button type="button" class="btn btn-clear" id="clearForm">Clear Form</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="articles-list">
+                <h3>Existing Articles</h3>
+                <div class="articles-container" id="articlesList">
+                    <!-- Articles will be loaded here dynamically -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    
+    <!-- Firebase Configuration -->
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAPwBUsVBv7H4rpXHEHi04zAz-h4P-My88",
+            authDomain: "portofolio-rizqiamanullah.firebaseapp.com",
+            databaseURL: "https://portofolio-rizqiamanullah-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "portofolio-rizqiamanullah",
+            storageBucket: "portofolio-rizqiamanullah.firebasestorage.app",
+            messagingSenderId: "237853721902",
+            appId: "1:237853721902:web:6aec2a3bc6c9effad626bf",
+            measurementId: "G-GKDQX71C2S"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        
+        // Initialize Firebase Auth and Firestore
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+    </script>
+    
+    <script src="js/admin.js"></script>
+</body>
+</html>

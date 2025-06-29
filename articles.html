@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="style1.css">
+    <title>Articles - Portfolio Website</title>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo">Rizqi Amanullah</a>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="articles.html" class="active">Articles</a>
+            <a href="index.html#skills">Skills</a>
+            <a href="index.html#education">Education</a>
+            <a href="index.html#experience">Experience</a>
+            <a href="contact.html">Contact</a>
+            <a href="admin.html">Admin</a>
+        </nav>
+    </header>
+
+    <section class="articles">
+        <h2>Articles & Insights</h2>
+        
+        <div class="articles-filter">
+            <div class="filter-container">
+                <select id="categoryFilter">
+                    <option value="">All Categories</option>
+                    <option value="Machine Learning">Machine Learning</option>
+                    <option value="Computer Vision">Computer Vision</option>
+                    <option value="Data Science">Data Science</option>
+                    <option value="Deep Learning">Deep Learning</option>
+                </select>
+                <button class="btn" id="featuredFilter">Show Featured Only</button>
+            </div>
+        </div>
+
+        <div class="featured-articles" id="featuredArticles">
+            <h3>Featured Articles</h3>
+            <div class="featured-container">
+                <!-- Featured articles will be loaded here -->
+            </div>
+        </div>
+
+        <div class="all-articles" id="allArticles">
+            <h3>All Articles</h3>
+            <div class="articles-grid">
+                <!-- All articles will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    
+    <!-- Firebase Configuration -->
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAPwBUsVBv7H4rpXHEHi04zAz-h4P-My88",
+            authDomain: "portofolio-rizqiamanullah.firebaseapp.com",
+            databaseURL: "https://portofolio-rizqiamanullah-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "portofolio-rizqiamanullah",
+            storageBucket: "portofolio-rizqiamanullah.firebasestorage.app",
+            messagingSenderId: "237853721902",
+            appId: "1:237853721902:web:6aec2a3bc6c9effad626bf",
+            measurementId: "G-GKDQX71C2S"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        
+        // Initialize Firestore
+        const db = firebase.firestore();
+    </script>
+    
+    <script src="js/articles.js"></script>
+</body>
+</html>

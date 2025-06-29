@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="style1.css">
+    <title>Admin Login - Portfolio Website</title>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="logo">Rizqi Amanullah</a>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="articles.html">Articles</a>
+            <a href="index.html#skills">Skills</a>
+            <a href="index.html#education">Education</a>
+            <a href="index.html#experience">Experience</a>
+            <a href="contact.html">Contact</a>
+            <a href="admin.html" class="active">Admin</a>
+        </nav>
+    </header>
+
+    <section class="admin-login">
+        <div class="login-container">
+            <h2>Admin Login</h2>
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="username">Email:</label>
+                    <input type="email" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn">Login</button>
+                <div id="error-message" class="error-message"></div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    
+    <!-- Firebase Configuration -->
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAPwBUsVBv7H4rpXHEHi04zAz-h4P-My88",
+            authDomain: "portofolio-rizqiamanullah.firebaseapp.com",
+            databaseURL: "https://portofolio-rizqiamanullah-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "portofolio-rizqiamanullah",
+            storageBucket: "portofolio-rizqiamanullah.firebasestorage.app",
+            messagingSenderId: "237853721902",
+            appId: "1:237853721902:web:6aec2a3bc6c9effad626bf",
+            measurementId: "G-GKDQX71C2S"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        
+        // Initialize Firebase Auth
+        const auth = firebase.auth();
+    </script>
+    
+    <script src="js/admin.js"></script>
+</body>
+</html>
