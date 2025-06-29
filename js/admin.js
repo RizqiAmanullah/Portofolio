@@ -23,12 +23,46 @@ document.addEventListener('DOMContentLoaded', function() {
             const password = document.getElementById('password').value;
             const errorMessage = document.getElementById('error-message');
             
+            // Clear previous error messages
+            errorMessage.style.display = 'none';
+            errorMessage.textContent = '';
+            
+            // Debug logging
+            console.log('Attempting login with email:', email);
+            console.log('Firebase auth object:', auth);
+            
             try {
-                await auth.signInWithEmailAndPassword(email, password);
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                console.log('Login successful:', userCredential.user);
                 window.location.href = 'admin-dashboard.html';
             } catch (error) {
                 console.error('Login error:', error);
-                errorMessage.textContent = error.message || 'Login failed';
+                console.error('Error code:', error.code);
+                console.error('Error message:', error.message);
+                
+                // Show user-friendly error messages
+                let errorText = '';
+                switch(error.code) {
+                    case 'auth/user-not-found':
+                        errorText = 'No user found with this email address.';
+                        break;
+                    case 'auth/wrong-password':
+                        errorText = 'Incorrect password.';
+                        break;
+                    case 'auth/invalid-email':
+                        errorText = 'Invalid email address.';
+                        break;
+                    case 'auth/user-disabled':
+                        errorText = 'This user account has been disabled.';
+                        break;
+                    case 'auth/too-many-requests':
+                        errorText = 'Too many failed login attempts. Please try again later.';
+                        break;
+                    default:
+                        errorText = error.message || 'Login failed. Please check your credentials.';
+                }
+                
+                errorMessage.textContent = errorText;
                 errorMessage.style.display = 'block';
             }
         });
